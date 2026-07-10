@@ -1,0 +1,16 @@
+# Gradle temporary and build files
+.gradle/
+build/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE configuration files (re-generated automatically by IDEs)
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+.vscode/
+out/

@@ -56,7 +56,7 @@ public class CastReel extends AbstractReel {
 
     @Override 
     protected void itemClickAction(int castId){
-        //Create a CastPanel with the cast id.
+        // Create a CastPanel with the cast id.
     }
     
 }

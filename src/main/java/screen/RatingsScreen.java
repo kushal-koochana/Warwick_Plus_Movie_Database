@@ -29,24 +29,24 @@ public class RatingsScreen {
 
         GridBagConstraints constraints = new GridBagConstraints();
         
-        //Fill space, and use non-zero weights so that fill works
+        // Fill space, and use non-zero weights so that fill works
         constraints.weightx = 2.0;
         constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
         Insets insets = new Insets(5,5,5,5); //Add space around reels
         constraints.insets = insets;
 
-        //Make the reels 3 grid units wide, in the leftmost position
+        // Make the reels 3 grid units wide, in the leftmost position
         int reelsWidth = 1;
         constraints.gridwidth = reelsWidth;
         constraints.gridx = 0;
         constraints.gridy = 0;
 
-        //The reels that will be scrolled
+        // The reels that will be scrolled
         JPanel reels = new JPanel();
         reels.setBorder(BorderFactory.createEmptyBorder());
         
-        //Make layout vertically stacked
+        // Make layout vertically stacked
         reels.setLayout(new BoxLayout(reels, BoxLayout.Y_AXIS));
         
         MovieReel mostRatedMovies = new MostRatedMovieReel(panel, stores);
@@ -66,9 +66,9 @@ public class RatingsScreen {
 
         reels.setSize(new Dimension(reelsScrollPane.getWidth(), reelsScrollPane.getHeight()));
 
-        //Restrict the reels pane (which has a vertical stack of reels) to be the width of the pane scrolling it
-        //This stops the reels scrollpane within it from just being really wide and not having a scroll bar,
-        //where the reelsScrollPane just started scrolling everything
+        // Restrict the reels pane (which has a vertical stack of reels) to be the width of the pane scrolling it
+        // This stops the reels scrollpane within it from just being really wide and not having a scroll bar,
+        // where the reelsScrollPane just started scrolling everything
         reels.setPreferredSize(new Dimension(reelsScrollPane.getWidth(), reelsScrollPane.getHeight()));
 
         panel.add(reelsScrollPane, constraints);
@@ -81,7 +81,7 @@ public class RatingsScreen {
         mostRatingsUserBorder.setTitleColor(Constants.getFontColor());
 
 
-        JPanel mostRatingsUserInner = new JPanel(); //The panel that is getting scrolled around
+        JPanel mostRatingsUserInner = new JPanel(); // The panel that is getting scrolled around
         mostRatingsUserInner.setBackground(Constants.getHighlight());
         mostRatingsUserInner.setForeground(Constants.getFontColor());
         JScrollPane mostRatingsUserScrollPane = new JScrollPane(mostRatingsUserInner);
@@ -93,11 +93,11 @@ public class RatingsScreen {
         MostRatedUsersRunnable mostRatedUsersRunnable = new MostRatedUsersRunnable(panel, mostRatingsUserScrollPane, mostRatingsUserInner, ratings);
 
 
-        constraints.insets = new Insets(5,5,5,5); //Add spacing around the panel
-        //Make the most rated users list one 'grid cell' wide, and in the location after the 3-wide reels
+        constraints.insets = new Insets(5,5,5,5); // Add spacing around the panel
+        // Make the most rated users list one 'grid cell' wide, and in the location after the 3-wide reels
         constraints.weightx = 0.2;
         constraints.gridwidth = 1;
-        constraints.gridx = 1; //place this in the grid cell to the right of the reels
+        constraints.gridx = 1; // place this in the grid cell to the right of the reels
 
 
 

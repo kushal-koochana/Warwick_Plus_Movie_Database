@@ -5,13 +5,16 @@ import structures.*;
 import interfaces.ICredits;
 
 public class Credits implements ICredits{
-    Stores stores;  // reference to stores used by Stores.java
+    // reference to stores used by Stores.java
+    Stores stores;
     // Hash table array of certain capacity, each slot holds head of single linked list of CreditNode objects (separate chaining).
     // A slot is null when no film has hashed to that bucket.
-    private CreditNode[] creditHashTable;   // film ID -> (Cast + Crew)
+    // film ID -> (Cast + Crew)
+    private CreditNode[] creditHashTable;
     // fixed number of buckets in hash table, used prime number (1999) to improve key distribution and reduce collisions.
     private int capacity = 1999;
-    private int size = 0;  // number of movies stored across the whole hash table
+    // number of movies stored across the whole hash table
+    private int size = 0;
 
 
     /**

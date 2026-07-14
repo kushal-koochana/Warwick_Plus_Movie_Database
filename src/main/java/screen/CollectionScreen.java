@@ -16,7 +16,7 @@ import utils.Constants;
 
 
 
-//A Screen for information about a specific cast member, like film screen is for Movies
+// A Screen for information about a specific cast member, like film screen is for Movies
 public class CollectionScreen {
     public static void createPanel(JPanel panel, int collectionID, AbstractStores stores) {
         panel.removeAll();
@@ -38,7 +38,7 @@ public class CollectionScreen {
         constraints.gridx = 0;
         constraints.gridy = 0;
 
-        //Create Cast title
+        // Create Cast title
         JTextPane title = new JTextPane();
         Document titleDoc = title.getStyledDocument();
 

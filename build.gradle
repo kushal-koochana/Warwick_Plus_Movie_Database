@@ -64,16 +64,16 @@ task Testbed(type: JavaExec) {
 }
 
 
-//Example implementation from Shubham Chaudhary:
-//https://stackoverflow.com/questions/3963708/gradle-how-to-display-test-results-in-the-console-in-real-time
+// Example implementation from Shubham Chaudhary:
+// https://stackoverflow.com/questions/3963708/gradle-how-to-display-test-results-in-the-console-in-real-time
 
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
-//Note for batch testing: Gradle isn't that happy about running the same test
-//multiple times at once (file lock issues). But running
-//tests for two projects at the same time (in different folders)
-//it doesn't care about.
+// Note for batch testing: Gradle isn't that happy about running the same test
+// multiple times at once (file lock issues). But running
+// tests for two projects at the same time (in different folders)
+// it doesn't care about.
 
 tasks.withType(Test) {
       // set heap size for the test JVM(s)
@@ -89,7 +89,7 @@ tasks.withType(Test) {
         events TestLogEvent.FAILED,
                TestLogEvent.PASSED,
                TestLogEvent.SKIPPED
-            //    TestLogEvent.STANDARD_OUT
+            // TestLogEvent.STANDARD_OUT
         exceptionFormat TestExceptionFormat.FULL
         showExceptions true
         showCauses true

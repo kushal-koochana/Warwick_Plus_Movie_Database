@@ -7,6 +7,7 @@ structures that supported fast lookup by unique integer key (TMDB film ID or use
 still being relatively memory-efficient across the dataset (consisting of approx. 1000 films
 and 16690 ratings). This report’s aim is to explain the reasoning behind the data structures
 chosen and key implementation decisions made.
+
 Key Data Structure: Hashtable with Separate Chaining:
 All of the stores use hash tables as the main data structure, as every major operation
 ultimately simplifies to requiring us to find some kind of record with an integer key provided.
@@ -101,6 +102,7 @@ Methods like ‘getMostRatedMovies’ and ‘getTopAverageRatedMovies’ need ag
 across all ratings. Using parallel MyDynamicArray instances, it allowed per-film counts and
 sums to accumulate during a single search, then again used selection sort to sort the results.
 Calculating averages before storing prevents repeated division during comparisons.
+
 Supporting Data Structure: MyDynamicArray:
 As the coursework Java spec penalised the use of MyArrayList, MyDynamicArray was
 implemented as a custom resizable array, satisfying the IList interface. It was an improved

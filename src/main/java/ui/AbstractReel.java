@@ -35,7 +35,7 @@ abstract class AbstractReel extends JScrollPane implements Runnable {
     public AbstractReel(JPanel screenPanel, String reelTitle, String loadingMessage){
         this.screenPanel = screenPanel;
 
-        //Create panels
+        // Create panels
 
         TitledBorder border;
         border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), reelTitle);
@@ -46,13 +46,13 @@ abstract class AbstractReel extends JScrollPane implements Runnable {
         setBackground(Constants.getHighlight());
         setForeground(Constants.getFontColor());
 
-        //JPanel with all the results in which is viewed by the scrollPane
+        // JPanel with all the results in which is viewed by the scrollPane
         resultsPanel = new JPanel();
         resultsPanel.setBackground(Constants.getHighlight());
         resultsPanel.setForeground(Constants.getFontColor());
-        setViewportView(resultsPanel); //Set what is being viewed
+        setViewportView(resultsPanel); // Set what is being viewed
 
-        //Restrict size of the scrollpane to the dimensions of the resultsPanel.
+        // Restrict size of the scrollpane to the dimensions of the resultsPanel.
         setBackground(Constants.getHighlight());
         setForeground(Constants.getFontColor());
         getHorizontalScrollBar().setUnitIncrement(80);

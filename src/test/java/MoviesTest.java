@@ -253,7 +253,7 @@ class MoviesTest {
         bankOfGenres.add(new Genre(9, "Musical"));
         bankOfGenres.add(new Genre(10, "Documentary"));
 
-        //  generate first fake data
+        // generate first fake data
         int id = 1;
         String title = "title";
         String originalTitle = "originalTitle";
@@ -426,7 +426,7 @@ class MoviesTest {
             randLanguages.add(iso639Data[random.nextInt(iso639Data.length)][1]);
         }
 
-        //  make array of unique values
+        // make array of unique values
         String[] uniqueRandLanguages = new String[randLanguages.size()];
         randLanguages.toArray(uniqueRandLanguages);
 

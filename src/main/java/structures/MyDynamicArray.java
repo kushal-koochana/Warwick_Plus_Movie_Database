@@ -3,7 +3,7 @@ package structures;
 public class MyDynamicArray<E> implements IList<E> {
     private static final int defaultCapacity = 10;  // initial default size of array
     private static final float growthScaleFactor = 1.5F; // the array capacity/length grows by this much when array's full
-    private static final int shrinkThreshold = 4;  //  the array's capacity halved when size < capacity / shrinkThreshold i.e when fewer
+    private static final int shrinkThreshold = 4;  // the array's capacity halved when size < capacity / shrinkThreshold i.e when fewer
     // than 25% of array slots are occupied
 
     private Object[] array;

@@ -145,7 +145,7 @@ public class LoadData implements Runnable {
     private JProgressBar loadingBar;
     private JLabel loadingText;
     
-    // Datastructures that the csv files are loaded into.
+    // Data structures that the csv files are loaded into.
     ArrayList<CreditRecord> backendCredits = new ArrayList<>();
     HashMap<Integer, CreditRecord> backendCreditsByMovieId = new HashMap<>();
 
@@ -204,14 +204,14 @@ public class LoadData implements Runnable {
     }
     }
 
-    //Load data into memory from default file locations
+    // Load data into memory from default file locations
     public LoadData() throws DataLoadException{
         this(null, null, Constants.defaultCreditsPath, 
                          Constants.defaultKeywordsPath, 
                          Constants.defaultMovieMetadataPath, 
                          Constants.defaultRatingsPath);
     }
-    //Loading into memory first method
+    // Loading into memory first method
     public LoadData(String creditsPath, String keywordsPath, String movieMetadataPath, String ratingsPath) throws DataLoadException{
         this(null, null, creditsPath, keywordsPath, movieMetadataPath, ratingsPath);
     }
@@ -220,7 +220,7 @@ public class LoadData implements Runnable {
         this.loadingText = loadingText;
         System.out.println("Loading data into record structures (backend)");
 
-        //Create File objects for all input files and check if they are normal files
+        // Create File objects for all input files and check if they are normal files
         String formatString = "Cannot open %s file (%s). Does not exist or is not a normal file";
         File creditsFile = new File(creditsPath);
         if (!creditsFile.isFile())  { throw new DataLoadException(String.format(formatString, "credits", creditsPath)); }
@@ -237,7 +237,7 @@ public class LoadData implements Runnable {
         // class to set total number of lines and number of lines for each type so that the actual load function can just do updateUI with what type it is and how many it has loaded
         FileLoadUiUpdater loadingUiUpdater = new FileLoadUiUpdater(loadingBar, loadingText, creditsFile, keywordsFile, moviesFile, ratingsFile);
 
-        //Load Metadata first to load validMovieIds
+        // Load Metadata first to load validMovieIds
         Set<Integer> validMovies = loadMetadata(moviesFile, loadingUiUpdater);
         loadCredits(creditsFile, loadingUiUpdater, validMovies);
         loadKeywords(keywordsFile, loadingUiUpdater, validMovies);
@@ -343,7 +343,7 @@ public class LoadData implements Runnable {
         Instant start = Instant.now();
 
 
-        //Add all of the items for those movies into the other stores for consistency:
+        // Add all of the items for those movies into the other stores for consistency:
 
         ArrayList<MovieRecord> movieRecords;
         ArrayList<CreditRecord> creditRecords;
@@ -351,7 +351,7 @@ public class LoadData implements Runnable {
         ArrayList<RatingRecord> ratingRecords;
 
         if (!loadSection){
-            //Load in the whole dataset
+            // Load in the whole dataset
             movieRecords   = backendMovies;
             creditRecords  = backendCredits;
             keywordRecords = backendKeywords;
@@ -364,18 +364,18 @@ public class LoadData implements Runnable {
             if (firstMovieIndex + numMovies > backendMovies.size()){
                 System.err.println("Invalid parameters for loading a section of the dataset. Asking to load past the end of the dataset");
             }
-            //Load in a subset of the dataset, restricted to a range of movies
+            // Load in a subset of the dataset, restricted to a range of movies
             movieRecords = new ArrayList<>();
             ArrayList<Integer> movieIds = new ArrayList<>();
     
-            //For all of the items in the 'numMovies' chunk after the current pointer 
+            // For all of the items in the 'numMovies' chunk after the current pointer 
             for (int i = firstMovieIndex; i < firstMovieIndex + numMovies; i++){
                 MovieRecord mr = backendMovies.get(i);
                 movieRecords.add(mr);
                 movieIds.add(mr.id);
             }
     
-            //update the other stores
+            // update the other stores
             creditRecords = new ArrayList<>();
             keywordRecords = new ArrayList<>();
             ratingRecords = new ArrayList<>();
@@ -480,7 +480,7 @@ public class LoadData implements Runnable {
                     int castElementId  = castJsonObject.getInt("cast_id");
                     String character   = castJsonObject.getString("character");
                     String creditId    = castJsonObject.getString("credit_id");
-                    int gender         = castJsonObject.getInt("gender"); //Note: ignoring this field
+                    int gender         = castJsonObject.getInt("gender"); // Note: ignoring this field
                     int castId         = castJsonObject.getInt("id");
                     String name        = castJsonObject.getString("name");
                     int order          = castJsonObject.getInt("order"); 
@@ -498,7 +498,7 @@ public class LoadData implements Runnable {
                     JSONObject crewJsonObject = crewJsonArray.getJSONObject(i);
                     String crewElementId = crewJsonObject.getString("credit_id");
                     String department    = crewJsonObject.getString("department");
-                    int gender           = crewJsonObject.getInt("gender"); //Note: ignoring this field
+                    int gender           = crewJsonObject.getInt("gender"); // Note: ignoring this field
                     int crewId           = crewJsonObject.getInt("id");
                     String job           = crewJsonObject.getString("job");
                     String name          = crewJsonObject.getString("name");
@@ -526,7 +526,7 @@ public class LoadData implements Runnable {
 
                 loadingUiUpdater.incrementUI(StoreType.CREDITS, record_count++);
                 
-            } //for each csv record
+            } // for each csv record
         }
         catch (IOException e){
             String message = "[ UNRECOVERABLE I/O ERROR ] Unable to open credits file ('" + creditsCsvFile.getPath() +"') for parsing. Please make sure it is in the 'data' directory.";
@@ -640,7 +640,7 @@ public class LoadData implements Runnable {
 
                 int movieId = Integer.parseInt(csvRecord.get("tmdb_id"));
 
-                //HARD FAIL if duplicate movies exist in the input file
+                // HARD FAIL if duplicate movies exist in the input file
                 if (backendMoviesByMovieId.containsKey(movieId)){
                     throw new DataLoadException("[" + record_count + "] --METADATA-- Input file ('" + metadataCsvFile.getPath() +"') contains duplicate Movie! id: " + movieId);
                 }
@@ -659,7 +659,7 @@ public class LoadData implements Runnable {
                 boolean adult       = Boolean.parseBoolean(csvRecord.get("adult"));
                 boolean video       = Boolean.parseBoolean(csvRecord.get("video"));
 
-                //Imdb
+                // Imdb
                 double vote_average = Double.parseDouble(csvRecord.get("vote_average"));
                 int vote_count      = Integer.parseInt(csvRecord.get("vote_count"));
                 String imdbId       = csvRecord.get("imdb_id");
@@ -707,8 +707,8 @@ public class LoadData implements Runnable {
                 String collectionString = csvRecord.get("belongs_to_collection");
                 int collectionId = -1;
                 String collectionName = null;
-                String collectionPoster = null;   //Note: currently unused
-                String collectionBackdrop = null; //Note: currently unused
+                String collectionPoster = null;   // Note: currently unused
+                String collectionBackdrop = null; // Note: currently unused
                 if (!collectionString.equals("")){
                     JSONObject collectionObject = new JSONObject(csvRecord.get("belongs_to_collection"));
                     collectionId       = collectionObject.getInt("id");
@@ -747,7 +747,7 @@ public class LoadData implements Runnable {
                 
                 loadingUiUpdater.incrementUI(StoreType.METADATA, record_count++);
 
-            } //for each record
+            } // for each record
 
             return backendMoviesByMovieId.keySet();
 
@@ -795,7 +795,7 @@ public class LoadData implements Runnable {
         int record_count = 0;
         try (CSVParser parser = CSVParser.parse(ratingsCsvFile, Charset.forName("utf-8"), csvFormat)){
             for (CSVRecord csvRecord : parser){
-                //For each record in csv file
+                // For each record in csv file
                 if (csvRecord.size() != 5){
                     String message = "[" + record_count + "] --RATINGS-- Incorrect list of ratings... No. fields found = " + csvRecord.size();
                     throw new DataLoadException(message);

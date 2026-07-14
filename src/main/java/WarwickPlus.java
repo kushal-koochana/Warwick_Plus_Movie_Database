@@ -117,7 +117,7 @@ public class WarwickPlus {
     }
 
     static public void start(AbstractStores stores, String creditsPath, String keywordsPath, String movieMetadataPath, String ratingsPath, Integer numMovies) {
-        //Create the UI
+        // Create the UI
         JFrame frame = new JFrame("Warwick+");
         frame.setVisible(false);
 
@@ -151,7 +151,7 @@ public class WarwickPlus {
 
         frame.setSize(Constants.hSize, Constants.vSize);
 
-        //frame.add(content);
+        // frame.add(content);
 
         frame.setLayout(null);
         frame.setResizable(false);
@@ -161,7 +161,7 @@ public class WarwickPlus {
 
         try{
             LoadData loading = new LoadData(loadingBar, loadingText, creditsPath, keywordsPath, movieMetadataPath, ratingsPath);
-            //Populate the student stores
+            // Populate the student stores
             if (numMovies == null){
                 loading.populate(stores);
             }
@@ -200,7 +200,7 @@ public class WarwickPlus {
         content.setForeground(Constants.getFontColor());
         content.setLayout(null);
 
-        //Build logo with required click listener
+        // Build logo with required click listener
         DisplayImage logo;
         try {
             logo = new DisplayImage("src/main/resources/img/WarwickPlusLogo.png");
@@ -220,7 +220,7 @@ public class WarwickPlus {
             e1.printStackTrace();
         }
 
-        //Build search box with required listeners
+        // Build search box with required listeners
         searchBox.setBounds((int) (Constants.hSize * 0.15), (int) (Constants.vSize * 0.01), (int) (Constants.hSize*0.85), (int) (Constants.vSize * 0.05));
         searchBox.setBackground(Constants.getHighlight());
         searchBox.setForeground(Constants.getFontColor());
@@ -325,7 +325,7 @@ public class WarwickPlus {
             frame.add(menuItemPanel);
         }
 
-        //Build stat block
+        // Build stat block
         String statString = " Films: " + stores.getMovies().size() + " movies\n Film Credits: " + stores.getCredits().size() + " movies\n     Unique Cast: ";
         if (stores.getCredits().getUniqueCast() == null ) {
             statString += "???";
@@ -353,14 +353,14 @@ public class WarwickPlus {
         stats.setMargin(new InsetsUIResource(3, 3, 3, 3));
         stats.setBounds(0, (int) (Constants.vSize * 0.75), (int) (Constants.hSize * 0.15), (int) (Constants.vSize * 0.25));
 
-        //Build frame
+        // Build frame
         frame.add(searchBox);
         frame.add(stats);
         frame.add(content);
 
         frame.setVisible(true);
 
-        //Go to the ratings screen by default:
+        // Go to the ratings screen by default:
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

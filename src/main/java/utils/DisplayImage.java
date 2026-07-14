@@ -34,7 +34,7 @@ public class DisplayImage extends JPanel{
                 rawImage = unknown;
             }
 
-            //Try and get the image from the url
+            // Try and get the image from the url
             String completeURL = "https://image.tmdb.org/t/p/w500" + urlEnding;
             BufferedImage im;
             try {
@@ -59,7 +59,7 @@ public class DisplayImage extends JPanel{
             }
         }
         catch (IOException e){
-            //Unable to find the unknown file
+            // Unable to find the unknown file
             System.err.println("Unable to find the appropriate 'unknown' image for " + type);
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());

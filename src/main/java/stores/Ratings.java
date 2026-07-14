@@ -6,8 +6,8 @@ import interfaces.IRatings;
 import structures.*;
 
 public class Ratings implements IRatings {
-    Stores stores; // reference to stores used by Stores.java, used in cross-store existence checks e.g. getMovieAverageRating()
-    
+    // reference to stores used by Stores.java, used in cross-store existence checks e.g. getMovieAverageRating()
+    Stores stores;
     // Hash table keyed on userID. Each slot holds the head of a singly-linked list of RatingNode objects linked via nextUser. 
     // Enables O(1) average retrieval of all ratings for a specific user.
     private RatingNode[] userHashTable;
@@ -15,8 +15,9 @@ public class Ratings implements IRatings {
     // nextMovie. Enables O(1) average retrieval of all ratings for a specific film.
     private RatingNode[] movieHashTable;
     // fixed number of buckets in hash table, used prime number (1999) to improve key distribution and reduce collisions.
-    private int capacity = 1999; 
-    private int size = 0; // number of ratings stored
+    private int capacity = 1999;
+    // number of ratings stored
+    private int size = 0;
 
 
     /**

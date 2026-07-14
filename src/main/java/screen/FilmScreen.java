@@ -41,7 +41,7 @@ public class FilmScreen {
         panel.removeAll();
         panel.setLayout(null);
 
-        //Create film title
+        // Create film title
         JTextPane title = new JTextPane();
         Document titleDoc = title.getStyledDocument();
 
@@ -73,7 +73,7 @@ public class FilmScreen {
         title.setEditable(false);
         System.out.println("\tTitle built");
 
-        //Find and display film poster
+        // Find and display film poster
         String filmPosterURL = movies.getPoster(filmID);
         if (filmPosterURL == null || filmPosterURL == "") {
             filmPosterURL = "src/main/resources/img/Movie-Unknown.png";
@@ -120,7 +120,7 @@ public class FilmScreen {
         }
         System.out.println("\tPoster built");
 
-        //Add tagline
+        // Add tagline
         TitledBorder taglineBorder;
         taglineBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Tagline");
         taglineBorder.setTitleJustification(TitledBorder.CENTER);
@@ -142,7 +142,7 @@ public class FilmScreen {
         tagline.setEditable(false);
         System.out.println("\tTagline built");
 
-        //Add overview
+        // Add overview
         TitledBorder overviewBorder;
         overviewBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Overview");
         overviewBorder.setTitleJustification(TitledBorder.CENTER);
@@ -163,7 +163,7 @@ public class FilmScreen {
         overview.setEditable(false);
         System.out.println("\tOverview built");
 
-        //Add film stats
+        // Add film stats
         TitledBorder statsBorder;
         statsBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()),
                 "Key Information");
@@ -283,7 +283,7 @@ public class FilmScreen {
         statsPanel.add(statsScroll);
         System.out.println("\tStats/Key Infomation built");
 
-        //Add Genres section
+        // Add Genres section
         TitledBorder genresBorder;
         genresBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Genres");
         genresBorder.setTitleJustification(TitledBorder.CENTER);

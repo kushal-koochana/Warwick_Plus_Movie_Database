@@ -6,13 +6,15 @@ import interfaces.IMovies;
 import structures.*;
 
 public class Movies implements IMovies{
-    Stores stores;  // reference to stores used by Stores.java
+    // reference to stores used by Stores.java
+    Stores stores;
     // Hash table array of certain capacity, each slot holds head of single linked list of MovieNode objects (separate chaining).
     // A slot is null when no film has hashed to that bucket.
     private MovieNode[] hashTable;
     // fixed number of buckets in hash table, used prime number (1999) to improve key distribution and reduce collisions.
     private int capacity = 1999;
-    private int size = 0;  // number of movies stored across the whole hash table
+    // number of movies stored across the whole hash table
+    private int size = 0;
     // Dynamic array of all known film collections. Looked up by linear scan on collection ID; kept separate from main hash
     // table, as film may belong to collection discovered only after film node itself has been inserted.
     private MyDynamicArray<CollectionNode> collections = new MyDynamicArray<>();

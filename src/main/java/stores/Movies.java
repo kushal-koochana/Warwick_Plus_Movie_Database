@@ -745,7 +745,7 @@ public class Movies implements IMovies{
                 boolean searchTermInOriginalTitle = node.originalTitle != null && node.originalTitle.toLowerCase().contains(searchTerm);
                 boolean searchTermInOverview = node.overview != null && node.overview.toLowerCase().contains(searchTerm);
 
-                if(searchTermInTitle || searchTermInOriginalTitle || searchTermInOverview) {
+                if (searchTermInTitle || searchTermInOriginalTitle || searchTermInOverview) {
                     largeFoundIDsArray[actualArraySize++] = node.id; 
                 }
             }

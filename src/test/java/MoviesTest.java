@@ -24,7 +24,6 @@ class MoviesTest {
     private Stores stores = new Stores();
     private Stores batchStores = new Stores();
 
-    // batch random data
     private ArrayList<Integer> IDs = new ArrayList<Integer>();
     private ArrayList<String> titles = new ArrayList<String>();
     private ArrayList<String> originalTitles = new ArrayList<String>();
@@ -45,7 +44,6 @@ class MoviesTest {
     
     private ArrayList<Genre> bankOfGenres = new ArrayList<Genre>();
 
-    // languages for random adding
     private final String[][] iso639Data = {
         {"Abkhazian","ab"},
         {"Afar","aa"},
@@ -241,7 +239,6 @@ class MoviesTest {
 
         bankOfGenres = new ArrayList<Genre>();
 
-        // Bank of generes to randomly select a genre from
         bankOfGenres.add(new Genre(1, "Horror"));
         bankOfGenres.add(new Genre(2, "Comedy"));
         bankOfGenres.add(new Genre(3, "Action"));
@@ -253,7 +250,6 @@ class MoviesTest {
         bankOfGenres.add(new Genre(9, "Musical"));
         bankOfGenres.add(new Genre(10, "Documentary"));
 
-        // generate first fake data
         int id = 1;
         String title = "title";
         String originalTitle = "originalTitle";
@@ -298,15 +294,13 @@ class MoviesTest {
 
         stores.getMovies().setPopularity(id, 3.0f);
 
-        // generate lots of data for batch testing
        batchGeneration();
 
     }
 
     void batchGeneration(){
-        // add data to arraylists
         batchData(batchSize);
-        // add data from arraylists to batchMovies
+
         for (int i =0; i<batchSize;i++){
             batchStores.getMovies().add(IDs.get(i), titles.get(i), originalTitles.get(i),overviews.get(i),
                 taglines.get(i), statuses.get(i),genresList.get(i), releases.get(i), 
@@ -347,7 +341,6 @@ class MoviesTest {
 
         for (int j = 0; j<batchSize; j++)
         {
-            // add the data to arraylists
             IDs.add(j);
             titles.add(randStringMaker(stringLength));
             originalTitles.add(randStringMaker(stringLength));
@@ -367,19 +360,14 @@ class MoviesTest {
             posters.add(randStringMaker(stringLength));
             
         }
-        // IDs are shuffled rather than randomly generated so that they are unique
         Collections.shuffle(IDs);
 
     }
 
-    /**
-     * @param stringLength how long the string should be
-     * @return random string of stringlength
-     */
     String randStringMaker(int stringLength){
         Random random = new Random(); 
-        int lowerLimit = 97; // letter 'a'
-        int upperLimit = 122; // letter 'z'
+        int lowerLimit = 97;
+        int upperLimit = 122;
         
         String generatedString = random.ints(lowerLimit, upperLimit + 1)
                 .limit(stringLength)
@@ -389,9 +377,6 @@ class MoviesTest {
         return generatedString;
     }
 
-    /**
-     * @return random Calendar date between 1950 and 2020
-     */
     LocalDate randCalendar(){
         Random random = new Random(); 
         
@@ -401,8 +386,7 @@ class MoviesTest {
     }
 
     Genre[] randGenres(){
-        Random random = new Random(); 
-        // make 1 or 2 genres
+        Random random = new Random();
         int numberOfGenres = random.nextInt(1)+1;
         
         Genre[] randGenres = new Genre[numberOfGenres];
@@ -414,19 +398,15 @@ class MoviesTest {
     }
 
     String[] randLanguages(){
-        Random random = new Random(); 
-        // make 1 - 5 languages
+        Random random = new Random();
         int numberOfLanguages = random.nextInt(4)+1;
 
         Set<String> randLanguages = new HashSet<String>();;
         
-        
-        // add random languages to set
         for (int i = 0; i < numberOfLanguages; i++){
             randLanguages.add(iso639Data[random.nextInt(iso639Data.length)][1]);
         }
 
-        // make array of unique values
         String[] uniqueRandLanguages = new String[randLanguages.size()];
         randLanguages.toArray(uniqueRandLanguages);
 
@@ -918,7 +898,6 @@ class MoviesTest {
     @Test void testMoviesGetProductionCountriesNeg(){
         String[] tmpCountries = {"GB", "YE"};
 
-        // Other values added just ot make sure it doesn't catch these.
         stores.getMovies().addProductionCountry(1, tmpCountries[0]);
         stores.getMovies().addProductionCountry(1, tmpCountries[1]);
 

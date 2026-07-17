@@ -28,11 +28,7 @@ public class MovieReel extends AbstractReel{
         super(screenPanel, "Movie Reel", "Loading Movie Reel");
         this.stores = stores;
     }
-    
-    // REFERENCE: https://stackoverflow.com/questions/21587309/positioning-jlabel-in-jpanel-below-the-image
-    // StackOverFlow, user 'MadProgrammer'
-    // date: 5/2/2014
-    // Date accessed ~ January 25th 2023
+
     @Override
     protected Image getImage(int movieId){
         try{
@@ -46,7 +42,7 @@ public class MovieReel extends AbstractReel{
             Image im;
             try{
                 im = ImageIO.read(new URL(completeURL));
-                if (im == null){ // File not found at URL
+                if (im == null){
                     im = unknown;
                 }
             }

@@ -16,17 +16,11 @@ import javax.swing.event.MouseInputAdapter;
 
 import utils.Constants;
 
-/***
- * Generic Class for a Reel (horizontal sequential view) of images with captions
- * To be used for things like displaying a list of movies with their titles
- * and ratings.
- */
 abstract class AbstractReel extends JScrollPane implements Runnable {
     
     protected JPanel screenPanel;
     private JLabel loadingText;
 
-    // private JScrollPane scrollPane;
     private JPanel resultsPanel;
 
     public AbstractReel(JPanel screenPanel){
@@ -34,8 +28,6 @@ abstract class AbstractReel extends JScrollPane implements Runnable {
     }
     public AbstractReel(JPanel screenPanel, String reelTitle, String loadingMessage){
         this.screenPanel = screenPanel;
-
-        // Create panels
 
         TitledBorder border;
         border = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), reelTitle);
@@ -46,13 +38,11 @@ abstract class AbstractReel extends JScrollPane implements Runnable {
         setBackground(Constants.getHighlight());
         setForeground(Constants.getFontColor());
 
-        // JPanel with all the results in which is viewed by the scrollPane
         resultsPanel = new JPanel();
         resultsPanel.setBackground(Constants.getHighlight());
         resultsPanel.setForeground(Constants.getFontColor());
-        setViewportView(resultsPanel); // Set what is being viewed
-
-        // Restrict size of the scrollpane to the dimensions of the resultsPanel.
+        setViewportView(resultsPanel);
+        
         setBackground(Constants.getHighlight());
         setForeground(Constants.getFontColor());
         getHorizontalScrollBar().setUnitIncrement(80);
@@ -67,11 +57,6 @@ abstract class AbstractReel extends JScrollPane implements Runnable {
         setVisible(true);
     }
 
-    /***
-     * Display the items in the reel: A series of pictures with captions.
-     * @param items The items to display. Pictures retreived from getImage function
-     * @param labels The labels for the items.
-     */
     protected void displayItems(int[] items, String[] labels) {
         setVisible(false);
 

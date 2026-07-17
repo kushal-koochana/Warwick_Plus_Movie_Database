@@ -53,9 +53,7 @@ public class MyArrayList<E> implements IList<E> {
     public int size() {
         return size;
     }
-    
-    // This line allows us to cast our object to type (E) without any warnings.
-    // For further detais, please see: http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/SuppressWarnings.html
+
     @SuppressWarnings("unchecked") 
     public E get(int index) {
         return (E) this.array[index];

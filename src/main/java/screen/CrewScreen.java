@@ -22,7 +22,6 @@ public class CrewScreen {
         panel.setLayout(null);
         panel.removeAll();
 
-        // Add the border for the crew from the X top rated movies
         TitledBorder topRatedCrewBorder;
         topRatedCrewBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Crew from top rated movies");
         topRatedCrewBorder.setTitleJustification(TitledBorder.CENTER);
@@ -50,7 +49,6 @@ public class CrewScreen {
 
         TopRatedCrewRunnable topRatedCrewRunnable = new TopRatedCrewRunnable(panel, topRatedCrew, topRatedCrewInner, stores);
 
-        // Add the border for the crew from recent movies
         TitledBorder recentCrewBorder;
         recentCrewBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Crew from movies released in the Naughties (2000 to 2010)");
         recentCrewBorder.setTitleJustification(TitledBorder.CENTER);
@@ -110,7 +108,7 @@ class TopRatedCrewRunnable implements Runnable {
     private JPanel resultsPanel;
     private AbstractStores stores;
     private JLabel loadingText;
-    private int[] topMovies; // store IDs of 20 top movies
+    private int[] topMovies;
 
     public TopRatedCrewRunnable(JPanel masterPanel, JScrollPane scrollPane, JPanel resultsPanel, AbstractStores stores) {
         this.masterPanel = masterPanel;
@@ -132,7 +130,7 @@ class TopRatedCrewRunnable implements Runnable {
 
     @Override
     public void run() {
-        topMovies = stores.getRatings().getTopAverageRatedMovies(Constants.topMoviesCount); // ids of top 20 movies
+        topMovies = stores.getRatings().getTopAverageRatedMovies(Constants.topMoviesCount);
 
         scrollPane.setVisible(false);
 
@@ -158,11 +156,11 @@ class TopRatedCrewRunnable implements Runnable {
             resultItem.setSize(scrollPane.getWidth(), itemHeight);
 
             String resultString = "";
-            String currentTitle = stores.getMovies().getTitle(topMovies[i]); // title of the current movie
-            CrewCredit[] crew = stores.getCredits().getFilmCrew(topMovies[i]); // current cast
+            String currentTitle = stores.getMovies().getTitle(topMovies[i]);
+            CrewCredit[] crew = stores.getCredits().getFilmCrew(topMovies[i]);
 
             int movieID = topMovies[i];
-            // create a clickable button
+
             JPanel titlePanel = new JPanel();
             JTextArea titleLabel = new JTextArea(currentTitle);
             titlePanel.setBackground(Constants.getBackground());
@@ -214,7 +212,7 @@ class TopRatedCrewRunnable implements Runnable {
             resultsPanel.add(titlePanel);
             for (int j = 0; j < crew.length; j ++) {
                 resultString += crew[j].getName() + " (" + crew[j].getJob() + ")";
-                if (j < crew.length-1) { // add '|' only if not last cast member reached
+                if (j < crew.length-1) {
                     resultString += " | ";
                 }
             }
@@ -249,9 +247,9 @@ class RecentMoviesCrewsRunnable implements Runnable {
     private JPanel resultsPanel;
     private AbstractStores stores;
     private JLabel loadingText;
-    private LocalDate endDate = LocalDate.now(); // store the date to be compared
-    private LocalDate startDate = LocalDate.now(); // store the date to be compared
-    int[] newMovies; // IDs of movies released in the naughties
+    private LocalDate endDate = LocalDate.now();
+    private LocalDate startDate = LocalDate.now();
+    int[] newMovies;
 
     public RecentMoviesCrewsRunnable(JPanel masterPanel, JScrollPane scrollPane, JPanel resultsPanel, AbstractStores stores) {
         this.masterPanel = masterPanel;
@@ -270,8 +268,8 @@ class RecentMoviesCrewsRunnable implements Runnable {
 
         scrollPane.setVisible(true);
 
-        endDate = LocalDate.of(2010, 1, 1); // date is 1/1/2010 00:00:00
-        startDate = LocalDate.of(2000, 1, 1); // date is 01/11/2000 00:00:00
+        endDate = LocalDate.of(2010, 1, 1);
+        startDate = LocalDate.of(2000, 1, 1);
     }
 
     @Override
@@ -303,10 +301,10 @@ class RecentMoviesCrewsRunnable implements Runnable {
 
             String resultString = "";
             String currentTitle = stores.getMovies().getTitle(newMovies[i]);
-            CrewCredit[] crew = stores.getCredits().getFilmCrew(newMovies[i]); // current cast
+            CrewCredit[] crew = stores.getCredits().getFilmCrew(newMovies[i]);
 
             int movieID = newMovies[i];
-            // create a clickable button
+
             JPanel titlePanel = new JPanel();
             JTextArea titleLabel = new JTextArea(currentTitle);
             titlePanel.setBackground(Constants.getBackground());
@@ -359,7 +357,7 @@ class RecentMoviesCrewsRunnable implements Runnable {
 
             for (int j = 0; j < crew.length; j ++) {
                 resultString += crew[j].getName() + " (" + crew[j].getJob() + ")";
-                if (j < crew.length-1) { // add '|' only if not last cast member reached
+                if (j < crew.length-1) {
                     resultString += " | ";
                 }
             }

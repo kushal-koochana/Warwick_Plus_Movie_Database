@@ -37,7 +37,7 @@ public class CastReel extends AbstractReel {
             Image im;
             try{
                 im = ImageIO.read(new URL(completeURL));
-                if (im == null){ // File not found at URL
+                if (im == null){
                     im = unknown;
                 }
             }
@@ -55,8 +55,6 @@ public class CastReel extends AbstractReel {
     }
 
     @Override 
-    protected void itemClickAction(int castId){
-        // Create a CastPanel with the cast id.
-    }
+    protected void itemClickAction(int castId){};
     
 }

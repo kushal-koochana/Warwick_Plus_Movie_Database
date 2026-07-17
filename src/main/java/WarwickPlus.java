@@ -29,7 +29,6 @@ import utils.LoadData;
 import utils.LoadData.DataLoadException;
 
 public class WarwickPlus {
-    // private static AbstractStores stores = new Stores();
 
     public static int getHSize() {
         return Constants.hSize;
@@ -40,7 +39,6 @@ public class WarwickPlus {
     }
     public static void main(String[] args) {
 
-        // Parse command line arguments
         Options options = new Options();
         
         options.addOption(Option.builder().longOpt("credits").argName("credits csv file")
@@ -59,8 +57,6 @@ public class WarwickPlus {
                                 .desc("The number of movies to load in (and thereby loading in less of the other files too)")
                                 .build());
         options.addOption("h","help", false, "Show this help message");
-
-        // Handle input data files.
 
         String creditsPath       = Constants.defaultCreditsPath;
         String keywordsPath      = Constants.defaultKeywordsPath;
@@ -117,7 +113,6 @@ public class WarwickPlus {
     }
 
     static public void start(AbstractStores stores, String creditsPath, String keywordsPath, String movieMetadataPath, String ratingsPath, Integer numMovies) {
-        // Create the UI
         JFrame frame = new JFrame("Warwick+");
         frame.setVisible(false);
 
@@ -151,8 +146,6 @@ public class WarwickPlus {
 
         frame.setSize(Constants.hSize, Constants.vSize);
 
-        // frame.add(content);
-
         frame.setLayout(null);
         frame.setResizable(false);
         frame.setVisible(true);
@@ -161,7 +154,7 @@ public class WarwickPlus {
 
         try{
             LoadData loading = new LoadData(loadingBar, loadingText, creditsPath, keywordsPath, movieMetadataPath, ratingsPath);
-            // Populate the student stores
+
             if (numMovies == null){
                 loading.populate(stores);
             }
@@ -173,10 +166,8 @@ public class WarwickPlus {
             setHomescreen(frame.getContentPane(), stores);
         }
         catch (DataLoadException e){
-            // Something went wrong in loading
-            // Note: Assumes that errors caused in the middle of a file will contain a record count.
             loadingText.setVisible(false); 
-            loadingBar.setValue(JProgressBar.CENTER); // Put loading bar back to 0% as it failed.
+            loadingBar.setValue(JProgressBar.CENTER);
             JLabel errorText = new JLabel("<html><div style='text-align: center'>" + e + "<br> See Terminal for details.</div></html>");
             System.err.println(e.getMessage());
             errorText.setBounds(0, (int) (Constants.vSize*0.75), Constants.hSize, 40);
@@ -200,7 +191,6 @@ public class WarwickPlus {
         content.setForeground(Constants.getFontColor());
         content.setLayout(null);
 
-        // Build logo with required click listener
         DisplayImage logo;
         try {
             logo = new DisplayImage("src/main/resources/img/WarwickPlusLogo.png");
@@ -220,7 +210,6 @@ public class WarwickPlus {
             e1.printStackTrace();
         }
 
-        // Build search box with required listeners
         searchBox.setBounds((int) (Constants.hSize * 0.15), (int) (Constants.vSize * 0.01), (int) (Constants.hSize*0.85), (int) (Constants.vSize * 0.05));
         searchBox.setBackground(Constants.getHighlight());
         searchBox.setForeground(Constants.getFontColor());
@@ -325,7 +314,6 @@ public class WarwickPlus {
             frame.add(menuItemPanel);
         }
 
-        // Build stat block
         String statString = " Films: " + stores.getMovies().size() + " movies\n Film Credits: " + stores.getCredits().size() + " movies\n     Unique Cast: ";
         if (stores.getCredits().getUniqueCast() == null ) {
             statString += "???";
@@ -353,14 +341,12 @@ public class WarwickPlus {
         stats.setMargin(new InsetsUIResource(3, 3, 3, 3));
         stats.setBounds(0, (int) (Constants.vSize * 0.75), (int) (Constants.hSize * 0.15), (int) (Constants.vSize * 0.25));
 
-        // Build frame
         frame.add(searchBox);
         frame.add(stats);
         frame.add(content);
 
         frame.setVisible(true);
 
-        // Go to the ratings screen by default:
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

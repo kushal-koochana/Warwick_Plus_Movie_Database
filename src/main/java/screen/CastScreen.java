@@ -25,7 +25,6 @@ public class CastScreen {
         panel.setLayout(null);
         panel.removeAll();
 
-        // Add the border for the cast from the 100 top rated movies
         TitledBorder topRatedCastBorder;
         topRatedCastBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Cast from Top " + Constants.topMoviesCount + " Rated Movies");
         topRatedCastBorder.setTitleJustification(TitledBorder.CENTER);
@@ -54,7 +53,6 @@ public class CastScreen {
 
         TopRatedCastRunnable topRatedCastRunnable = new TopRatedCastRunnable(panel, topRatedCast, topRatedCastInner, stores);
 
-        // Add the border for the cast from movies released in the 90's
         TitledBorder oldMoviesCastBorder;
         oldMoviesCastBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Cast from Movies in the 90's");
         oldMoviesCastBorder.setTitleJustification(TitledBorder.CENTER);
@@ -115,7 +113,7 @@ class TopRatedCastRunnable implements Runnable {
     private JPanel resultsPanel;
     private AbstractStores stores;
     private JLabel loadingText;
-    private int[] topMovies; // store IDs of 20 top movies
+    private int[] topMovies;
 
     public TopRatedCastRunnable(JPanel masterPanel, JScrollPane scrollPane, JPanel resultsPanel, AbstractStores stores) {
         this.masterPanel = masterPanel;
@@ -138,7 +136,7 @@ class TopRatedCastRunnable implements Runnable {
     @Override
     public void run() {
 
-        topMovies = stores.getRatings().getMostRatedMovies(Constants.topMoviesCount); // ids of top 20 movies
+        topMovies = stores.getRatings().getMostRatedMovies(Constants.topMoviesCount);
 
         scrollPane.setVisible(false);
 
@@ -166,10 +164,9 @@ class TopRatedCastRunnable implements Runnable {
 
             String resultString = "";
             int movieID = topMovies[i];
-            String currentTitle = stores.getMovies().getTitle(topMovies[i]); // title of the current movie
-            CastCredit[] cast = stores.getCredits().getFilmCast(topMovies[i]); // current cast
+            String currentTitle = stores.getMovies().getTitle(topMovies[i]);
+            CastCredit[] cast = stores.getCredits().getFilmCast(topMovies[i]);
 
-            // create a clickable button
             JPanel titlePanel = new JPanel();
             JTextArea titleLabel = new JTextArea(currentTitle);
             titlePanel.setBackground(Constants.getBackground());
@@ -215,7 +212,7 @@ class TopRatedCastRunnable implements Runnable {
 
             for (int j = 0; j < cast.length; j ++) {
                 resultString += cast[j].getName() + " (" + cast[j].getCharacter() + ")";
-                if (j < cast.length-1) { // add '|' only if not last cast member reached
+                if (j < cast.length-1) {
                     resultString += " | ";
                 }
             }
@@ -251,9 +248,9 @@ class OldMoviesCastRunnable implements Runnable {
     private JPanel resultsPanel;
     private AbstractStores stores;
     private JLabel loadingText;
-    private LocalDate endDate = LocalDate.now(); // store the date to be compared
-    private LocalDate startDate = LocalDate.now(); // store the date to be compared
-    int[] oldMovies; // IDs of movies released before a predefined date
+    private LocalDate endDate = LocalDate.now();
+    private LocalDate startDate = LocalDate.now();
+    int[] oldMovies;
 
     public OldMoviesCastRunnable(JPanel masterPanel, JScrollPane scrollPane, JPanel resultsPanel, AbstractStores stores) {
         this.masterPanel = masterPanel;
@@ -272,13 +269,13 @@ class OldMoviesCastRunnable implements Runnable {
 
         scrollPane.setVisible(true);
 
-        endDate = LocalDate.of(2000, 1, 1); // date is 01/01/2000 00:00:00
-        startDate = LocalDate.of(1990, 1, 1); // date is EpOCH 0, 01/01/1990 00:00:00
+        endDate = LocalDate.of(2000, 1, 1);
+        startDate = LocalDate.of(1990, 1, 1);
     }
 
     @Override
     public void run() {
-        oldMovies = stores.getMovies().getAllIDsReleasedInRange(startDate, endDate); // IDs of movies released before a pre-defined date
+        oldMovies = stores.getMovies().getAllIDsReleasedInRange(startDate, endDate);
 
         scrollPane.setVisible(false);
 
@@ -306,9 +303,8 @@ class OldMoviesCastRunnable implements Runnable {
             String resultString = "";
             int movieID = oldMovies[i];
             String currentTitle = stores.getMovies().getTitle(oldMovies[i]);
-            CastCredit[] cast = stores.getCredits().getFilmCast(oldMovies[i]); // current cast
-
-            // create a clickable button
+            CastCredit[] cast = stores.getCredits().getFilmCast(oldMovies[i]);
+            
             JPanel titlePanel = new JPanel();
             JTextArea titleLabel = new JTextArea(currentTitle);
             titlePanel.setBackground(Constants.getBackground());
@@ -361,7 +357,7 @@ class OldMoviesCastRunnable implements Runnable {
 
             for (int j = 0; j < cast.length; j ++) {
                 resultString += cast[j].getName() + " (" + cast[j].getCharacter() + ")";
-                if (j < cast.length-1) { // add '|' only if not last cast member reached
+                if (j < cast.length-1) {
                     resultString += " | ";
                 }
             }

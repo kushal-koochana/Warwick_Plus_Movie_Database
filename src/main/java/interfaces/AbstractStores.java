@@ -1,7 +1,5 @@
 package interfaces;
 
-// Abstract class for Stores so that other stores classes can be made
-// Not technically an interface, but fits with all the other interfaces well.
 public abstract class AbstractStores {
     protected ICredits credits;
     protected IKeywords keywords;

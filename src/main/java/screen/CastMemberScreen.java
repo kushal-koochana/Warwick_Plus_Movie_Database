@@ -23,8 +23,6 @@ import utils.DisplayImage;
 import utils.DisplayImage.ImageType;
 
 
-
-// A Screen for information about a specific cast member, like film screen is for Movies
 public class CastMemberScreen {
     public static void createPanel(JPanel panel, int castID, AbstractStores stores) {
 
@@ -37,7 +35,7 @@ public class CastMemberScreen {
         panel.setBackground(Constants.getHighlight());
         panel.setForeground(Constants.getFontColor());
         GridBagConstraints topConstraints = new GridBagConstraints();
-        topConstraints.insets = new Insets(5,5,5,5); // Add space between areas
+        topConstraints.insets = new Insets(5,5,5,5);
 
         topConstraints.weightx = 1.0;
         topConstraints.weighty = 1.0;
@@ -62,12 +60,12 @@ public class CastMemberScreen {
 
         leftSide.setLayout(new GridBagLayout());
         GridBagConstraints leftConstraints = new GridBagConstraints();
-        // All components should fill the left side horizontally
+
         leftConstraints.anchor = GridBagConstraints.NORTH;
         leftConstraints.gridy = 0;
         leftConstraints.weightx = 1.0;
         leftConstraints.fill = GridBagConstraints.HORIZONTAL;
-        // Create Cast title
+
         JTextPane title = new JTextPane();
         Document titleDoc = title.getStyledDocument();
 
@@ -125,7 +123,6 @@ public class CastMemberScreen {
         }
         System.out.println("\tProfile picture built");
 
-        // Add overview
         TitledBorder keyFactsBorder;
         keyFactsBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Key Facts");
         keyFactsBorder.setTitleJustification(TitledBorder.LEFT);

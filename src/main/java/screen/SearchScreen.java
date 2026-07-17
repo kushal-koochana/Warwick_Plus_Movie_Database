@@ -165,7 +165,6 @@ public class SearchScreen {
         keywordSearch.getViewport().setPreferredSize(
                 new Dimension((int) (panel.getWidth() / 4)-20, (panel.getHeight() - 2 * title.getHeight())-30));
 
-        // keywordSearch.setBorder(null);
         keywordSearch.setAutoscrolls(false);
         keywordsResultsOuter.add(keywordSearch);
 

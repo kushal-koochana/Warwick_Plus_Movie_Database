@@ -27,25 +27,21 @@ public class HomeScreen {
         panel.setLayout(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();
-        
-        // Fill space, and use non-zero weights so that fill works
+
         constraints.weightx = 2.0;
         constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
-        Insets insets = new Insets(5,5,5,5); //Add space around reels
+        Insets insets = new Insets(5,5,5,5);
         constraints.insets = insets;
 
-        // Make the reels 3 grid units wide, in the leftmost position
         int reelsWidth = 1;
         constraints.gridwidth = reelsWidth;
         constraints.gridx = 0;
         constraints.gridy = 0;
 
-        // The reels that will be scrolled
         JPanel reels = new JPanel();
         reels.setBorder(BorderFactory.createEmptyBorder());
-        
-        // Make layout vertically stacked
+
         reels.setLayout(new BoxLayout(reels, BoxLayout.Y_AXIS));
         
         MovieReel topAverageRatedMovies = new TopAverageRatedMovies(panel, stores);
@@ -65,22 +61,18 @@ public class HomeScreen {
 
         reels.setSize(new Dimension(reelsScrollPane.getWidth(), reelsScrollPane.getHeight()));
 
-        // Restrict the reels pane (which has a vertical stack of reels) to be the width of the pane scrolling it
-        // This stops the reels scrollpane within it from just being really wide and not having a scroll bar,
-        // where the reelsScrollPane just started scrolling everything
         reels.setPreferredSize(new Dimension(reelsScrollPane.getWidth(), reelsScrollPane.getHeight()));
 
         panel.add(reelsScrollPane, constraints);
 
 
-        // Get the top 100 users with the most ratings & display their UID, average rating and number of ratings. Ordered by number of reviews, descending.
         TitledBorder mostCastCreditsBorder;
         mostCastCreditsBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Most Cast Credits");
         mostCastCreditsBorder.setTitleJustification(TitledBorder.CENTER);
         mostCastCreditsBorder.setTitleColor(Constants.getFontColor());
 
 
-        JPanel mostCastCreditsInner = new JPanel(); // The panel that is getting scrolled around
+        JPanel mostCastCreditsInner = new JPanel();
         mostCastCreditsInner.setBackground(Constants.getHighlight());
         mostCastCreditsInner.setForeground(Constants.getFontColor());
         JScrollPane mostCastCreditsScrollPane = new JScrollPane(mostCastCreditsInner);
@@ -92,11 +84,10 @@ public class HomeScreen {
         MostCastCredits mostCastCreditsRunnable = new MostCastCredits(panel, mostCastCreditsScrollPane, mostCastCreditsInner, stores);
 
 
-        constraints.insets = new Insets(5,5,5,5); // Add spacing around the panel
-        // Make the most rated users list one 'grid cell' wide, and in the location after the 3-wide reels
+        constraints.insets = new Insets(5,5,5,5);
         constraints.weightx = 0.2;
         constraints.gridwidth = 1;
-        constraints.gridx = 1; // place this in the grid cell to the right of the reels
+        constraints.gridx = 1;
 
 
 

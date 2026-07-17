@@ -41,7 +41,6 @@ public class FilmScreen {
         panel.removeAll();
         panel.setLayout(null);
 
-        // Create film title
         JTextPane title = new JTextPane();
         Document titleDoc = title.getStyledDocument();
 
@@ -73,7 +72,6 @@ public class FilmScreen {
         title.setEditable(false);
         System.out.println("\tTitle built");
 
-        // Find and display film poster
         String filmPosterURL = movies.getPoster(filmID);
         if (filmPosterURL == null || filmPosterURL == "") {
             filmPosterURL = "src/main/resources/img/Movie-Unknown.png";
@@ -120,7 +118,6 @@ public class FilmScreen {
         }
         System.out.println("\tPoster built");
 
-        // Add tagline
         TitledBorder taglineBorder;
         taglineBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Tagline");
         taglineBorder.setTitleJustification(TitledBorder.CENTER);
@@ -142,7 +139,6 @@ public class FilmScreen {
         tagline.setEditable(false);
         System.out.println("\tTagline built");
 
-        // Add overview
         TitledBorder overviewBorder;
         overviewBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Overview");
         overviewBorder.setTitleJustification(TitledBorder.CENTER);
@@ -163,7 +159,6 @@ public class FilmScreen {
         overview.setEditable(false);
         System.out.println("\tOverview built");
 
-        // Add film stats
         TitledBorder statsBorder;
         statsBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()),
                 "Key Information");
@@ -283,7 +278,6 @@ public class FilmScreen {
         statsPanel.add(statsScroll);
         System.out.println("\tStats/Key Infomation built");
 
-        // Add Genres section
         TitledBorder genresBorder;
         genresBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Genres");
         genresBorder.setTitleJustification(TitledBorder.CENTER);
@@ -315,7 +309,6 @@ public class FilmScreen {
         }
         System.out.println("\tGenres built");
 
-        // Add Languages section
         TitledBorder languagesBorder;
         languagesBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()), "Spoken Languages");
         languagesBorder.setTitleJustification(TitledBorder.CENTER);
@@ -358,7 +351,6 @@ public class FilmScreen {
         }
         System.out.println("\tLanguages built");
 
-        // Add collection
         TitledBorder collectionBorder;
         collectionBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()),
                 "Collection");
@@ -399,7 +391,6 @@ public class FilmScreen {
 
         System.out.println("\tCollections built");
 
-        // Add IMDb
         TitledBorder imdbBorder;
         imdbBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Constants.getFontColor()),
                 "IMDb");

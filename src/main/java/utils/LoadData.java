@@ -144,8 +144,7 @@ public class LoadData implements Runnable {
     private String loadingString = "";
     private JProgressBar loadingBar;
     private JLabel loadingText;
-    
-    // Data structures that the csv files are loaded into.
+
     ArrayList<CreditRecord> backendCredits = new ArrayList<>();
     HashMap<Integer, CreditRecord> backendCreditsByMovieId = new HashMap<>();
 
@@ -168,7 +167,6 @@ public class LoadData implements Runnable {
             this.loadingBar = loadingBar;
             this.loadingText = loadingText;
             try{
-                // Populate numLines with how many lines each file has
                 numLines.put(StoreType.CREDITS,  (Files.lines(creditsFile.toPath()).count() - 2));
                 numLines.put(StoreType.KEYWORDS, (Files.lines(keywordsFile.toPath()).count() - 2));
                 numLines.put(StoreType.METADATA, (Files.lines(movieFile.toPath()).count() - 2));
@@ -204,14 +202,13 @@ public class LoadData implements Runnable {
     }
     }
 
-    // Load data into memory from default file locations
     public LoadData() throws DataLoadException{
         this(null, null, Constants.defaultCreditsPath, 
                          Constants.defaultKeywordsPath, 
                          Constants.defaultMovieMetadataPath, 
                          Constants.defaultRatingsPath);
     }
-    // Loading into memory first method
+    
     public LoadData(String creditsPath, String keywordsPath, String movieMetadataPath, String ratingsPath) throws DataLoadException{
         this(null, null, creditsPath, keywordsPath, movieMetadataPath, ratingsPath);
     }
@@ -220,7 +217,6 @@ public class LoadData implements Runnable {
         this.loadingText = loadingText;
         System.out.println("Loading data into record structures (backend)");
 
-        // Create File objects for all input files and check if they are normal files
         String formatString = "Cannot open %s file (%s). Does not exist or is not a normal file";
         File creditsFile = new File(creditsPath);
         if (!creditsFile.isFile())  { throw new DataLoadException(String.format(formatString, "credits", creditsPath)); }
@@ -234,10 +230,8 @@ public class LoadData implements Runnable {
         File ratingsFile = new File(ratingsPath);
         if (!ratingsFile.isFile())  { throw new DataLoadException(String.format(formatString, "ratings", ratingsPath)); }
 
-        // class to set total number of lines and number of lines for each type so that the actual load function can just do updateUI with what type it is and how many it has loaded
         FileLoadUiUpdater loadingUiUpdater = new FileLoadUiUpdater(loadingBar, loadingText, creditsFile, keywordsFile, moviesFile, ratingsFile);
 
-        // Load Metadata first to load validMovieIds
         Set<Integer> validMovies = loadMetadata(moviesFile, loadingUiUpdater);
         loadCredits(creditsFile, loadingUiUpdater, validMovies);
         loadKeywords(keywordsFile, loadingUiUpdater, validMovies);
@@ -288,14 +282,7 @@ public class LoadData implements Runnable {
         }
     }
 
-
-    /**
-     * Populate the student's data stores with the data loaded into the backend structures
-     * @param stores
-     */
     public NumRecordsAdded populate(AbstractStores stores){
-        // Purposefully uses the same function as populating a section of the data.
-        // To make sure that these two use cases have the same results!
         return populate(stores, false, -1, -1);
     }
     
@@ -316,22 +303,6 @@ public class LoadData implements Runnable {
         return populate(stores, true, firstMovieIndex, numMovies);
     }
 
-    /***
-     * Populate the student's data structures with a section of the data loaded into the backend structures.
-     * This should be the only function that does this, to maintain consistency between
-     * calling for everything (as in the ui) and calling for a subsection of the data (as in test suite)
-     * 
-     * Assumes that loaded backend MovieRecords are unique. If they aren't, loading in multiple sections
-     * could lead to the other data structures to gain duplicates that aren't in the original files.
-     * when they are added to to make all the stores consistent with each other.
-     * @param credits Student's credit store
-     * @param keywords Student's keywords store
-     * @param movies Student's movies store
-     * @param ratings Student's ratings store
-     * @param loadSection whether to only load a section of the data
-     * @param firstMovieIndex The movie index to load from
-     * @param numMovies
-     */
     private NumRecordsAdded populate(AbstractStores stores, boolean loadSection, int firstMovieIndex, int numMovies){
 
         System.out.println("Populating stores...");
@@ -343,15 +314,12 @@ public class LoadData implements Runnable {
         Instant start = Instant.now();
 
 
-        // Add all of the items for those movies into the other stores for consistency:
-
         ArrayList<MovieRecord> movieRecords;
         ArrayList<CreditRecord> creditRecords;
         ArrayList<KeywordRecord> keywordRecords;
         ArrayList<RatingRecord> ratingRecords;
 
         if (!loadSection){
-            // Load in the whole dataset
             movieRecords   = backendMovies;
             creditRecords  = backendCredits;
             keywordRecords = backendKeywords;
@@ -364,18 +332,15 @@ public class LoadData implements Runnable {
             if (firstMovieIndex + numMovies > backendMovies.size()){
                 System.err.println("Invalid parameters for loading a section of the dataset. Asking to load past the end of the dataset");
             }
-            // Load in a subset of the dataset, restricted to a range of movies
             movieRecords = new ArrayList<>();
             ArrayList<Integer> movieIds = new ArrayList<>();
-    
-            // For all of the items in the 'numMovies' chunk after the current pointer 
+
             for (int i = firstMovieIndex; i < firstMovieIndex + numMovies; i++){
                 MovieRecord mr = backendMovies.get(i);
                 movieRecords.add(mr);
                 movieIds.add(mr.id);
             }
-    
-            // update the other stores
+
             creditRecords = new ArrayList<>();
             keywordRecords = new ArrayList<>();
             ratingRecords = new ArrayList<>();
@@ -447,15 +412,6 @@ public class LoadData implements Runnable {
     }
 
 
-
-
-
-    /****************************************************/
-    /*                                                  */
-    /*                   File Loaders                   */
-    /*                                                  */
-    /****************************************************/
-
     private void loadCredits(File creditsCsvFile, FileLoadUiUpdater loadingUiUpdater, Set<Integer> validMovies) throws DataLoadException {
         System.out.println("\nLoading credits from \"" + creditsCsvFile.getPath() + "\"...");
 
@@ -470,17 +426,15 @@ public class LoadData implements Runnable {
                     throw new DataLoadException("[CREDITS] Incorrect number of csv fields in record number: " + record_count + ". Number of fields found: " + csvRecord.size());
                 }
 
-                // Parse cast
                 JSONArray castJsonArray = new JSONArray(csvRecord.get("cast"));
                 CastCredit[] castArray = new CastCredit[castJsonArray.length()];
                 for (int i = 0; i < castJsonArray.length(); i++){
-                    // Each cast member
                     JSONObject castJsonObject = castJsonArray.getJSONObject(i);
 
                     int castElementId  = castJsonObject.getInt("cast_id");
                     String character   = castJsonObject.getString("character");
                     String creditId    = castJsonObject.getString("credit_id");
-                    int gender         = castJsonObject.getInt("gender"); // Note: ignoring this field
+                    int gender         = castJsonObject.getInt("gender");
                     int castId         = castJsonObject.getInt("id");
                     String name        = castJsonObject.getString("name");
                     int order          = castJsonObject.getInt("order"); 
@@ -490,15 +444,13 @@ public class LoadData implements Runnable {
                                             castId, name, order, profilePath);
                 }
 
-                // Parse crew
                 JSONArray crewJsonArray = new JSONArray(csvRecord.get("crew"));
                 CrewCredit[] crewArray = new CrewCredit[crewJsonArray.length()];
                 for (int i = 0; i < crewJsonArray.length(); i++){
-                    // Each crew member
                     JSONObject crewJsonObject = crewJsonArray.getJSONObject(i);
                     String crewElementId = crewJsonObject.getString("credit_id");
                     String department    = crewJsonObject.getString("department");
-                    int gender           = crewJsonObject.getInt("gender"); // Note: ignoring this field
+                    int gender           = crewJsonObject.getInt("gender");
                     int crewId           = crewJsonObject.getInt("id");
                     String job           = crewJsonObject.getString("job");
                     String name          = crewJsonObject.getString("name");
@@ -507,7 +459,6 @@ public class LoadData implements Runnable {
                     crewArray[i] = new CrewCredit(crewElementId, department, crewId, job, name, profilePath);
                 }
 
-                // Parse top level id in csv file (never empty)
                 int movieId = Integer.parseInt(csvRecord.get("tmdb_id"));
 
                 if (!validMovies.contains(movieId)){
@@ -526,7 +477,7 @@ public class LoadData implements Runnable {
 
                 loadingUiUpdater.incrementUI(StoreType.CREDITS, record_count++);
                 
-            } // for each csv record
+            }
         }
         catch (IOException e){
             String message = "[ UNRECOVERABLE I/O ERROR ] Unable to open credits file ('" + creditsCsvFile.getPath() +"') for parsing. Please make sure it is in the 'data' directory.";
@@ -554,21 +505,18 @@ public class LoadData implements Runnable {
                             .build();
         int record_count = 1;
         try (CSVParser parser = CSVParser.parse(keywordsCsvFile, Charset.forName("UTF-8") , csvFormat)){
-            for (CSVRecord csvRecord : parser){ // For every csv line, excluding the header
+            for (CSVRecord csvRecord : parser){
                 if (csvRecord.size() != 2){
                     throw new DataLoadException("[KEYWORDS] Incorrect number of csv fields in record number: " + record_count + ". Number of fields found: " + csvRecord.size());
                 }
 
                 int movieId = Integer.parseInt(csvRecord.get("tmdb_id"));
 
-                // Check if have already parsed a keyword record for that movieId 
-                // (if there are multiple lines for that movieId in the file)
                 if (backendKeywordsByMovieId.containsKey(movieId)){
                     String message = "Keywords file contains multiple records for movie (id:" + movieId + ")";
                     throw new DataLoadException(message);
                 }
 
-                // Check if this line in the keywords file is referring to a movie that actually exists
                 if (!validMovies.contains(movieId)){
                     String message = "Keywords file contains a keyword record for a movie (id:" + movieId + ") that doesn't exist in the movie metadata file!";
                     throw new DataLoadException(message);
@@ -577,10 +525,9 @@ public class LoadData implements Runnable {
                 JSONArray jsonKeywordArray = new JSONArray(csvRecord.get("keywords"));
                 
                 Keyword[] keywordArray = new Keyword[jsonKeywordArray.length()];
-                // Read from the json keyword array that looks like "[{'id':100, 'name':'based on the novel'},...]"
+
                 for (int i = 0; i < jsonKeywordArray.length(); i++){
                     JSONObject jsonKeyword = jsonKeywordArray.getJSONObject(i); 
-                    // each {'id':100, 'name':'based on the novel'} in the array
 
                     int keyword_id      = jsonKeyword.getInt("id");
                     String keyword_name = jsonKeyword.getString("name");
@@ -618,13 +565,6 @@ public class LoadData implements Runnable {
         }
     }
 
-    /***
-     * Load Film data from csv file.
-     * @param metadataCsvFile
-     * @param loadingUiUpdater
-     * @return Set of movie IDs that were loaded
-     * @throws DataLoadException
-     */
     private Set<Integer> loadMetadata(File metadataCsvFile, FileLoadUiUpdater loadingUiUpdater) throws DataLoadException {
         System.out.println("\nLoading movies metadata from \"" + metadataCsvFile.getPath() + "\"...");
         CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
@@ -633,19 +573,17 @@ public class LoadData implements Runnable {
                             .build();
         int record_count = 0;
         try (CSVParser parser = CSVParser.parse(metadataCsvFile, Charset.forName("UTF-8"), csvFormat)){
-            for (CSVRecord csvRecord : parser){ // For each record line in the file
+            for (CSVRecord csvRecord : parser){
                 if (csvRecord.size() != 24) {
                     throw new DataLoadException("[" + record_count + "] --METADATA-- Incorrect number of fields. Number of fields found: " + csvRecord.size());
                 }
 
                 int movieId = Integer.parseInt(csvRecord.get("tmdb_id"));
 
-                // HARD FAIL if duplicate movies exist in the input file
                 if (backendMoviesByMovieId.containsKey(movieId)){
                     throw new DataLoadException("[" + record_count + "] --METADATA-- Input file ('" + metadataCsvFile.getPath() +"') contains duplicate Movie! id: " + movieId);
                 }
 
-                // Parse simple fields
                 long budget    = Long.parseLong(csvRecord.get("budget"));
                 long revenue   = Long.parseLong(csvRecord.get("revenue"));
                 String runtime_in_file = csvRecord.get("runtime");
@@ -659,7 +597,6 @@ public class LoadData implements Runnable {
                 boolean adult       = Boolean.parseBoolean(csvRecord.get("adult"));
                 boolean video       = Boolean.parseBoolean(csvRecord.get("video"));
 
-                // Imdb
                 double vote_average = Double.parseDouble(csvRecord.get("vote_average"));
                 int vote_count      = Integer.parseInt(csvRecord.get("vote_count"));
                 String imdbId       = csvRecord.get("imdb_id");
@@ -674,7 +611,6 @@ public class LoadData implements Runnable {
                 String homepage         = csvRecord.get("homepage");
                 String poster_path      = csvRecord.get("poster_path");
 
-                // Parse Genres
                 JSONArray jsonGenreArray = new JSONArray(csvRecord.get("genres"));
                 Genre[] genreArray = new Genre[jsonGenreArray.length()];
                 for (int i = 0; i < jsonGenreArray.length(); i++){
@@ -684,7 +620,6 @@ public class LoadData implements Runnable {
                     genreArray[i] = new Genre(genreId, genreName);
                 }
 
-                // Parse Languages
                 JSONArray jsonLanguageArray = new JSONArray(csvRecord.get("spoken_languages"));
                 String[] languageArray = new String[jsonLanguageArray.length()];
                 for (int i = 0; i < jsonLanguageArray.length(); i++){
@@ -693,7 +628,6 @@ public class LoadData implements Runnable {
                     languageArray[i] = lang_short;
                 }
 
-                // Parse Release Date
                 String release_in_file = csvRecord.get("release_date");
                 LocalDate release;
                 if (!release_in_file.equals("")){
@@ -703,12 +637,11 @@ public class LoadData implements Runnable {
                     release = null;
                 }
 
-                // Add Collection
                 String collectionString = csvRecord.get("belongs_to_collection");
                 int collectionId = -1;
                 String collectionName = null;
-                String collectionPoster = null;   // Note: currently unused
-                String collectionBackdrop = null; // Note: currently unused
+                String collectionPoster = null;
+                String collectionBackdrop = null;
                 if (!collectionString.equals("")){
                     JSONObject collectionObject = new JSONObject(csvRecord.get("belongs_to_collection"));
                     collectionId       = collectionObject.getInt("id");
@@ -717,7 +650,6 @@ public class LoadData implements Runnable {
                     collectionBackdrop = collectionObject.getString("backdrop_path");
                 }
 
-                // Add Companies
                 JSONArray jsonCompanyArray = new JSONArray(csvRecord.get("production_companies"));
                 Company[] companyArray = new Company[jsonCompanyArray.length()];
                 for (int i = 0; i < jsonCompanyArray.length(); i++){
@@ -727,7 +659,6 @@ public class LoadData implements Runnable {
                     companyArray[i] = new Company(companyId, companyName);
                 }
 
-                // Add Countries
                 JSONArray jsonCountryArray = new JSONArray(csvRecord.get("production_countries"));
                 String[] countryArray = new String[jsonCountryArray.length()];
                 for (int i = 0; i < jsonCountryArray.length(); i++){
@@ -747,7 +678,7 @@ public class LoadData implements Runnable {
                 
                 loadingUiUpdater.incrementUI(StoreType.METADATA, record_count++);
 
-            } // for each record
+            }
 
             return backendMoviesByMovieId.keySet();
 
@@ -775,17 +706,6 @@ public class LoadData implements Runnable {
         }
     }
 
-
-
-
-
-    /***
-     * Load the Ratings file into RatingRecord objects in backend datastructures
-     * @param ratingsCsvFile The file to load in
-     * @param loadUiUpdater
-     * @param validMovies The set of movies that have been parsed from the movies file
-     * @throws DataLoadException When the file is of the incorrect format
-     */
     private void loadRatings(File ratingsCsvFile, FileLoadUiUpdater loadUiUpdater, Set<Integer> validMovies) throws DataLoadException {
         System.out.println("\nLoading ratings from \"" + ratingsCsvFile.getPath() + "\"...\n\n");
         CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
@@ -795,7 +715,6 @@ public class LoadData implements Runnable {
         int record_count = 0;
         try (CSVParser parser = CSVParser.parse(ratingsCsvFile, Charset.forName("utf-8"), csvFormat)){
             for (CSVRecord csvRecord : parser){
-                // For each record in csv file
                 if (csvRecord.size() != 5){
                     String message = "[" + record_count + "] --RATINGS-- Incorrect list of ratings... No. fields found = " + csvRecord.size();
                     throw new DataLoadException(message);
@@ -803,7 +722,6 @@ public class LoadData implements Runnable {
 
                 int movieId  = Integer.parseInt(csvRecord.get("tmdbId"));
 
-                // Check if this line in the ratings file is referring to a movie that actually exists
                 if (!validMovies.contains(movieId)){
                     String message = "Ratings file contains a rating for a movie (id:" + movieId + ") that doesn't exist in the movie metadata file!";
                     throw new DataLoadException(message);

@@ -1,7 +1,6 @@
 package interfaces;
 import java.lang.Comparable;
 
-// Information about the role a cast member played in a film, and the cast member
 public interface ICastCredit extends Comparable<ICastCredit> {
     public int getElementID();
 
